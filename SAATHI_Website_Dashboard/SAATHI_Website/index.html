@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title> | Smart Agriculture</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <div class="logo">S</div>
+        <div><b>SAATHI</b><small>Smart Agriculture System</small></div><span id="conn">Not connected</span><button id="settingsOpen">⚙ Settings</button>
+    </header>
+    <main>
+        <section class="welcome">
+            <div><small>SMART FARMING · LIVE MONITORING</small>
+                <h1>Smart farm dashboard 🌱</h1>
+                <p>Monitor crop conditions and manage irrigation from one place.</p>
+            </div>
+            <div class="clock"><small>LOCAL TIME</small><b id="clock">--:--:--</b><span id="date"></span></div>
+        </section>
+        <section class="strip">
+            <div>Controller<strong id="controller">Checking…</strong></div>
+            <div>Pump<strong id="pump">Unknown</strong></div>
+            <div>ThingSpeak<strong id="cloud">Not configured</strong></div>
+            <div>Camera<strong id="cameraStatus">Not checked</strong></div>
+        </section>
+        <h2>Sensor overview</h2>
+        <section class="metrics">
+            <article><small>Temperature</small><strong><span id="temp">--</span> °C</strong>
+                <p>Air temperature</p>
+            </article>
+            <article><small>Humidity</small><strong><span id="humidity">--</span> %</strong>
+                <p>Relative humidity</p>
+            </article>
+            <article><small>Soil sensor</small><strong id="soil">--</strong>
+                <p>Raw ADC reading</p>
+            </article>
+            <article><small>Operating mode</small><strong id="mode">--</strong>
+                <p>Automatic or manual</p>
+            </article>
+        </section>
+        <section class="twocol">
+            <article class="panel"><small>IRRIGATION</small>
+                <h2>Pump controls</h2>
+                <p id="pumpText">Connect the main ESP32 in Settings.</p>
+                <div class="buttons"><button id="on">Turn pump ON</button><button class="red" id="off">Turn pump
+                        OFF</button></div><label class="toggle">Automatic irrigation mode <input type="checkbox"
+                        id="auto"></label>
+                <p class="note" id="controlNote">Configure the main ESP32 IP address in Settings.</p>
+            </article>
+            <article class="panel"><small>FIELD CAMERA</small>
+                <h2>Live monitoring</h2>
+                <div class="camera" id="cameraFrame">Configure the ESP32-CAM stream URL in Settings.</div>
+                <div class="buttons"><span id="streamLabel">No stream configured</span><button class="secondary" id="reload">Reload stream</button></div>
+            </article>
+        </section>
+        <section class="twocol">
+            <article class="panel"><small>CLOUD LOGGING</small>
+                <h2>ThingSpeak readings</h2>
+                <div class="cloudgrid">
+                    <div>Temperature<strong id="ctemp">--</strong></div>
+                    <div>Humidity<strong id="chum">--</strong></div>
+                    <div>Soil<strong id="csoil">--</strong></div>
+                    <div>Pump<strong id="cpump">--</strong></div>
+                </div><button class="secondary" id="cloudRefresh">Refresh ThingSpeak</button><a id="tslink" href="https://thingspeak.com/" target="_blank" rel="noopener">Open ThingSpeak ↗</a>
+                <p id="cloudNote" class="note">Set channel ID and Read API key in Settings.</p>
+            </article>
+            <article class="panel"><small>SYSTEM CHECK</small>
+                <h2>Connection details</h2>
+                <p>Main ESP32: <code id="mainLabel">Not configured</code></p>
+                <p>Camera: <code id="camLabel">Not configured</code></p>
+                <p>Controller response: <code id="response">—</code></p><button class="secondary" id="test">Test
+                    connections now</button>
+            </article>
+        </section>
+        <footer>SAATHI Smart Agriculture System · Water-aware farming 🌿</footer>
+    </main>
+    <dialog id="settings">
+        <form id="settingsForm">
+            <h2>Device & cloud settings</h2>
+            <p class="note">Saved only in this browser. Do not publish private API keys.</p><label>Main ESP32 base
+                URL<input id="mainUrl" type="url" placeholder="http://10.122.243.50"></label><label>ESP32-CAM stream
+                URL<input id="streamUrl" type="url" value="http://10.122.243.180:81/stream"></label><label>ThingSpeak
+                Channel ID<input id="channelId" value="3252160"></label><label>ThingSpeak Read API key<input
+                    id="readKey" type="password" placeholder="Required for private channel"></label>
+            <div class="fields"><label>Temperature field<input id="fieldTemp" type="number" min="1" max="8"
+                        value="1"></label><label>Humidity field<input id="fieldHumidity" type="number" min="1" max="8"
+                        value="2"></label><label>Soil field<input id="fieldSoil" type="number" min="1" max="8"
+                        value="3"></label><label>Pump field<input id="fieldPump" type="number" min="1" max="8"
+                        value="4"></label></div><label>Refresh interval<select id="refreshSeconds">
+                    <option value="5">5 seconds</option>
+                    <option value="10" selected>10 seconds</option>
+                    <option value="30">30 seconds</option>
+                    <option value="60">60 seconds</option>
+                </select></label>
+            <p class="note warning">Main ESP32 firmware must support /STATUS, /ON, /OFF, /AUTO, /MANUAL and CORS.</p>
+            <div class="buttons"><button type="button" class="secondary" id="cancel">Cancel</button><button type="submit">Save settings</button></div>
+        </form>
+    </dialog>
+    <div id="toast"></div>
+    <script src="app.js"></script>
+</body>
+
+</html>
